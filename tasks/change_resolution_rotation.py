@@ -23,7 +23,7 @@ def mouse_callback(event, x, y, flags, param):
 def main():
     # read input args
     if len(sys.argv) != 3:
-        print "usage: " + sys.argv[0] + " outer_size fps"
+        print("usage: " + sys.argv[0] + " outer_size fps")
         return -1
     outer_size = int(sys.argv[1])
     fps = int(sys.argv[2])
@@ -47,12 +47,12 @@ def main():
     movie_id = 0
     movie_files = os.listdir('./datas/movie/')
     if len(movie_files) == 0:
-        print "no movie"
+        print("no movie")
         return -1
     else:
-        print "movie files:"
+        print("movie files:")
         for movie_file_each in movie_files:
-            print movie_file_each
+            print(movie_file_each)
 
     # video reader and writer
     cap = cv2.VideoCapture('./datas/movie/' + movie_files[0])
@@ -69,7 +69,7 @@ def main():
     ret, frame = cap.read()
     window_name = "SELECT DESK"
     frame_for_select = cv2.resize(frame, (int(frame.shape[1] * 0.2), int(frame.shape[0] * 0.2)))
-    print "Please select left-top and right-down"
+    print("Please select left-top and right-down")
     cv2.imshow(window_name, frame_for_select)
     desk_area = []
     cv2.setMouseCallback(window_name, mouse_callback, desk_area)
@@ -78,7 +78,7 @@ def main():
     desk_area = np.array(desk_area) * 5
     # select the mask area
     window_name = "SELECT left-top, right-top, right-down"
-    print "Please select left-top and right-down"
+    print("Please select left-top and right-down")
     cv2.imshow(window_name, frame[desk_area[0][1]:desk_area[1][1], desk_area[0][0]:desk_area[1][0]])
     postit_area = []
     cv2.setMouseCallback(window_name, mouse_callback, postit_area)
@@ -95,11 +95,11 @@ def main():
     # desk_area = np.array([[1615, 890], [2110, 1285]])
     for rotate_angle in range(0, 105, 15):
         experiment_result.write("---angle:" + str(rotate_angle) + "---" + "\n")
-        print "---angle:" + str(rotate_angle) + "---"
+        print("---angle:" + str(rotate_angle) + "---")
         for movie_id in range(len(movie_files)):
             for resolution in range(0, 100):
                 resolution = float(resolution) * 0.01
-                print "pattern:" + str(resolution)
+                print("pattern:" + str(resolution))
                 time = 0
                 success_count = 0
                 postit_saved = {}
@@ -179,7 +179,7 @@ def main():
                         # save postit image
                         if result_num != -1:
                             # already exist
-                            if postit_saved.has_key(result_num):
+                            if result_num in postit_saved:
                                 # judge move and rotate
                                 # calc dist
                                 dist = np.linalg.norm(
@@ -216,7 +216,7 @@ def main():
                                 cv2.imwrite("./datas/postit_saved/" + str(result_num) + ".jpg", postit_image_for_save)
 
                     # delete old postit(long time no see)
-                    for id, val in postit_saved.items():
+                    for id, val in list(postit_saved.items()):
                         if (time / fps - val["last_time"]) > time_thre:
                             postit_saved[id]["points"] = [[-5, 0], [0, 0], [0, -5], [-5, -5]]
 
@@ -257,12 +257,12 @@ def main():
                     int(postit_area_width * (1 - resolution))) + "," + str(time) + "," + str(success_count) + "," + str(
                     float(success_count) / time) + "\n")
                 cv2.imwrite("./datas/postit_saved/frame.jpg", frame_for_save)
-                print "-----success result------"
-                print "resolution:" + str(int(postit_area_height * (1 - resolution))) + "," + str(
-                    int(postit_area_width * (1 - resolution)))
-                print "success count: " + str(success_count)
-                print "time:" + str(time)
-                print "success rate: " + str(float(success_count) / time)
+                print("-----success result------")
+                print("resolution:" + str(int(postit_area_height * (1 - resolution))) + "," + str(
+                    int(postit_area_width * (1 - resolution))))
+                print("success count: " + str(success_count))
+                print("time:" + str(time))
+                print("success rate: " + str(float(success_count) / time))
 
 
 if __name__ == "__main__":

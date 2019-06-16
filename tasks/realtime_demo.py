@@ -28,12 +28,12 @@ class TestThread(threading.Thread):
         self.ret = None
 
     def run(self):
-        print " === start sub thread (sub class) === "
+        print(" === start sub thread (sub class) === ")
         while not self.stop_flag:
             self.ret, self.frame = self.cap.read()
             # cv2.imshow("multi_frame", self.frame)
             # cv2.waitKey(1)
-        print " === end sub thread (sub class) === "
+        print(" === end sub thread (sub class) === ")
 
     def stop(self):
         self.stop_flag = True
@@ -46,7 +46,7 @@ def mouse_callback(event, x, y, flags, param):
 def main():
     # read input args
     if len(sys.argv) != 3:
-        print "usage: " + sys.argv[0] + " outer_size fps"
+        print("usage: " + sys.argv[0] + " outer_size fps")
         return -1
     outer_size = int(sys.argv[1])
     fps = int(sys.argv[2])
@@ -81,10 +81,10 @@ def main():
     # first select the desk area
     cap.read()
     ret, frame = cap.read()
-    print ret
+    print(ret)
     window_name = "SELECT DESK"
     frame_for_select = cv2.resize(frame, (int(frame.shape[1] * 0.2), int(frame.shape[0] * 0.2)))
-    print "Please select left-top and right-down"
+    print("Please select left-top and right-down")
     cv2.imshow(window_name, frame_for_select)
     desk_area = []
     cv2.setMouseCallback(window_name, mouse_callback, desk_area)
@@ -115,7 +115,7 @@ def main():
     while (1):
 
         # read frame
-        print "progress: " + str(int(time / fps) / 60) + ":" + str((time / fps) % 60)
+        print("progress: " + str(int(time / fps) / 60) + ":" + str((time / fps) % 60))
         # ret, frame = cap.read()
 
         ret = th_cl.ret
@@ -160,7 +160,7 @@ def main():
             # save postit image
             if result_num != -1:
                 # already exist
-                if postit_saved.has_key(result_num):
+                if result_num in postit_saved:
                     # judge move and rotate
                     # calc dist
                     dist = np.linalg.norm(
@@ -198,7 +198,7 @@ def main():
                     cv2.imwrite("./datas/postit_saved/" + str(result_num) + ".jpg", postit_image_for_save)
 
         # delete old postit(long time no see)
-        for id, val in postit_saved.items():
+        for id, val in list(postit_saved.items()):
             if (time / fps - val["last_time"]) > time_thre:
                 postit_saved[id]["points"] = [[-5, 0], [0, 0], [0, -5], [-5, -5]]
 
@@ -286,7 +286,7 @@ def main():
         # add time
         time += 1
 
-        print "time: " + str(tm.time() - start_time)
+        print("time: " + str(tm.time() - start_time))
 
     # final save
     csv_util.write_final(postit_saved, csv_final)

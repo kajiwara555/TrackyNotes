@@ -2,7 +2,7 @@ import sys
 
 def main():
     if len(sys.argv) != 6:
-        print "usage:" + sys.argv[0] + " final_csv naruhodo_csv time_dif(movie_time - time_dif = naruhodo_time) before_naruhodo after_naruhodo"
+        print("usage:" + sys.argv[0] + " final_csv naruhodo_csv time_dif(movie_time - time_dif = naruhodo_time) before_naruhodo after_naruhodo")
         return -1
     #read argv
     final_csv = sys.argv[1]

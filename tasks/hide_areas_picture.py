@@ -21,7 +21,7 @@ def mouse_callback(event, x, y, flags, param):
 def main():
     # read input args
     if len(sys.argv) != 3:
-        print "usage: " + sys.argv[0] + " outer_size fps"
+        print("usage: " + sys.argv[0] + " outer_size fps")
         return -1
     outer_size = int(sys.argv[1])
     fps = int(sys.argv[2])
@@ -45,12 +45,12 @@ def main():
     movie_id = 0
     movie_files = os.listdir('./datas/movie/')
     if len(movie_files) == 0:
-        print "no movie"
+        print("no movie")
         return -1
     else:
-        print "movie files:"
+        print("movie files:")
         for movie_file_each in movie_files:
-            print movie_file_each
+            print(movie_file_each)
 
     # video reader and writer
     # cap = cv2.VideoCapture('./datas/movie/' + movie_files[0])
@@ -81,7 +81,7 @@ def main():
     # select the mask area
     frame = cv2.imread('./datas/movie/' + movie_files[movie_id])
     window_name = "SELECT MASK"
-    print "Please select left-top and right-down"
+    print("Please select left-top and right-down")
     cv2.imshow(window_name, frame)
     mask_area = []
     cv2.setMouseCallback(window_name, mouse_callback, mask_area)
@@ -111,7 +111,7 @@ def main():
     previous_mask_len = 0
 
     for mask_num in mask_num_list:
-        print "pattern:" + str(mask_num)
+        print("pattern:" + str(mask_num))
         before = timer.time()
         time = 0
         success_count = 0
@@ -164,7 +164,7 @@ def main():
             # save postit image
             if result_num != -1:
                 # already exist
-                if postit_saved.has_key(result_num):
+                if result_num in postit_saved:
                     # judge move and rotate
                     # calc dist
                     dist = np.linalg.norm(
@@ -199,7 +199,7 @@ def main():
                     cv2.imwrite("./datas/postit_saved/" + str(result_num) + ".jpg", postit_image_for_save)
 
                     # delete old postit(long time no see)
-        for id, val in postit_saved.items():
+        for id, val in list(postit_saved.items()):
             if (time / fps - val["last_time"]) > time_thre:
                 postit_saved[id]["points"] = [[-5, 0], [0, 0], [0, -5], [-5, -5]]
 
@@ -234,11 +234,11 @@ def main():
             experiment_result.write("\n")
         experiment_result.write(str(float(success_count) / time) + ",")
         previous_mask_len = len(mask_num)
-        print "-----success result------"
-        print "success count: " + str(success_count)
-        print "time:" + str(time)
-        print "success rate: " + str(float(success_count) / time)
-        print "consumed time:" + str(after - before)
+        print("-----success result------")
+        print("success count: " + str(success_count))
+        print("time:" + str(time))
+        print("success rate: " + str(float(success_count) / time))
+        print("consumed time:" + str(after - before))
 
 
 if __name__ == "__main__":

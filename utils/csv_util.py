@@ -1,5 +1,5 @@
 def write_every_second(postit_saved, file):
-    for key, val in postit_saved.items():
+    for key, val in list(postit_saved.items()):
         file.write(str(key) + ",")
         file.write(str(val["points"][0][0]) + "," + str(val["points"][0][1]) + "," +str(val["points"][1][0]) + "," 
                    +str(val["points"][1][1]) + "," + str(val["points"][2][0]) + "," + str(val["points"][2][1]) + ","
@@ -7,7 +7,7 @@ def write_every_second(postit_saved, file):
     file.write("\n")
 
 def write_final(postit_saved, file):
-    for key, val in postit_saved.items():
+    for key, val in list(postit_saved.items()):
         file.write(str(key) + ",")
         file.write(str(val["first_time"]) + ",")
         for time in val["move"]:

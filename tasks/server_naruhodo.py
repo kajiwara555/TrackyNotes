@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import SimpleHTTPServer
-import SocketServer
+import http.server
+import socketserver
 
-class MyHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+class MyHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         body = b'Naruhodo'
         self.send_response(200)
@@ -24,7 +24,7 @@ PORT = 8000
 # Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
 Handler = MyHandler
 
-httpd = SocketServer.TCPServer(("", PORT), Handler)
+httpd = socketserver.TCPServer(("", PORT), Handler)
 
-print "serving at port", PORT
+print("serving at port", PORT)
 httpd.serve_forever()

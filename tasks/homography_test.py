@@ -19,4 +19,4 @@ if __name__ == "__main__":
     for src_point_each in src_point_3dim:
         point_after = np.matrix(M) * np.matrix(src_point_each).T
         point_after /= point_after[2]
-        print point_after[0:2]
+        print(point_after[0:2])

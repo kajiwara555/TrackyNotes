@@ -20,7 +20,7 @@ def mouse_callback(event, x, y, flags, param):
 def main():
     # read input args
     if len(sys.argv) != 3:
-        print "usage: " + sys.argv[0] + " outer_size fps"
+        print("usage: " + sys.argv[0] + " outer_size fps")
         return -1
     outer_size = int(sys.argv[1])
     fps = int(sys.argv[2])
@@ -44,12 +44,12 @@ def main():
     movie_id = 0
     movie_files = os.listdir('./datas/movie/')
     if len(movie_files) == 0:
-        print "no movie"
+        print("no movie")
         return -1
     else:
-        print "movie files:"
+        print("movie files:")
         for movie_file_each in movie_files:
-            print movie_file_each
+            print(movie_file_each)
 
     # video reader and writer
     cap = cv2.VideoCapture('./datas/movie/' + movie_files[0])
@@ -65,7 +65,7 @@ def main():
     ret, frame = cap.read()
     window_name = "SELECT DESK"
     frame_for_select = cv2.resize(frame, (int(frame.shape[1] * 0.2), int(frame.shape[0] * 0.2)))
-    print "Please select left-top and right-down"
+    print("Please select left-top and right-down")
     cv2.imshow(window_name, frame_for_select)
     desk_area = []
     cv2.setMouseCallback(window_name, mouse_callback, desk_area)
@@ -96,7 +96,7 @@ def main():
                     break
         else:
             # read frame
-            print "progress: " + str(int(time / fps) / 60) + ":" + str((time / fps) % 60)
+            print("progress: " + str(int(time / fps) / 60) + ":" + str((time / fps) % 60))
             ret, frame = cap.read()
             if ret == False:
                 movie_id += 1
@@ -139,7 +139,7 @@ def main():
                 # save postit image
                 if result_num != -1:
                     # already exist
-                    if postit_saved.has_key(result_num):
+                    if result_num in postit_saved:
                         # judge move and rotate
                         # calc dist
                         dist = np.linalg.norm(
@@ -177,7 +177,7 @@ def main():
 
 
             # delete old postit(long time no see)
-            for id, val in postit_saved.items():
+            for id, val in list(postit_saved.items()):
                 if (time / fps - val["last_time"]) > time_thre:
                     postit_saved[id]["points"] = [[-5, 0], [0, 0], [0, -5], [-5, -5]]
 
