@@ -12,10 +12,6 @@ pip install -r requirements.py
 ```
 
 # 付箋の作成
-付箋の枠線が不要な場合は下記設定ファイルの`write_outer_rectangle`をFalseにしてから実行
-```
-config/postit_config.yaml
-```
 付箋作成コマンド
 ```bash
 python ./tasks/make_postit.py
@@ -25,6 +21,11 @@ python ./tasks/make_postit.py
 datas/postit
 ```
 100cm × 75cmで印刷して切り取ると付箋が完成（サイズを指定して印刷するにはイラレやwordを使う）
+
+付箋の枠線が不要な場合は下記設定ファイルの`write_outer_rectangle`をFalseにしてから実行
+```
+config/postit_config.yaml
+```
 
 # 付箋の認識
 ## 認識の実行
