@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 from reedsolo import RSCodec
 import yaml
+import os
 
 #global parameters
 postit_config = yaml.load(open("./config/postit_config.yaml", "r"))
@@ -38,6 +39,10 @@ rect_rect_space_vertical = (postit_height/2 - horizon_y_buffer - location_height
 
 def draw_location_dot(postit, bit_array, first_x, first_y, horizon):
 
+    # first_xとfirst_yは描画のためにintに変換
+    first_x = int(first_x)
+    first_y = int(first_y)
+
     if horizon == True:
         #draw outer rectangle
         cv2.rectangle(postit, (first_x, first_y), (first_x + location_width, first_y + location_height), 0, line_width)
@@ -57,6 +62,11 @@ def draw_location_dot(postit, bit_array, first_x, first_y, horizon):
                 cv2.rectangle(postit, (first_x +y_buffer, first_y+ i*space_x + x_buffer), (first_x + y_buffer+ rect_len, first_y + i*space_x + x_buffer+ rect_len),0,-1)
 
 def draw_bit(bit_array, postit, first_x, first_y, horizon):
+
+    # first_xとfirst_yは描画のためにintに変換
+    first_x = int(first_x)
+    first_y = int(first_y)
+
     if horizon == True:
         #draw outer rectangle
         cv2.rectangle(postit, (first_x, first_y), (first_x + bit_width, first_y + bit_height), 0, line_width)
@@ -112,6 +122,8 @@ def draw_all_bit(bit_array_all, postit):
         draw_bit(bit_array_all[14],postit, postit_width - bit_height - horizon_x_buffer, start_upper, False)
 
 def main():
+    # データ格納用ディレクトリの作成
+    os.makedirs('./datas/postit/', exist_ok=True)
 
     for i in range(0,256):
         postit = np.tile(np.uint8([255]), (postit_height, postit_width,1))               
