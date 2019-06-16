@@ -1,7 +1,7 @@
 #postit size
 postit_width: 600
 postit_height: 450
-write_outer_rectangle: False
+write_outer_rectangle: True
 
 #common parameters for inner
 space_x: 7
