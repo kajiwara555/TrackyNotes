@@ -75,7 +75,7 @@ def main():
 
     # video writer
     if video_save:
-        writer = cv2.VideoWriter("./datas/movie/OUT.avi", cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), fps,
+        writer = cv2.VideoWriter("./datas/movie_out/OUT.avi", cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), fps,
                                  (frame.shape[1], frame.shape[0]))
 
     # postit dictionary
