@@ -77,7 +77,7 @@ class getPostits:
         binImage = cv2.adaptiveThreshold(grayImage, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 5, 5)
         # cv2.imshow("bin", binImage)
         # cv2.waitKey(0)
-        contours, hierarchy = cv2.findContours(binImage, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        _, contours, hierarchy = cv2.findContours(binImage, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
         location_xy = [[] for i in range(0, 8)]
         # print "outersize:" + str(outer_size)
@@ -85,7 +85,7 @@ class getPostits:
         for count in range(0, len(contours)):
             # minAreaRect
             rect = cv2.minAreaRect(contours[count])
-            box = cv2.cv.BoxPoints(rect)
+            box = cv2.boxPoints(rect)
             box = np.int0(box)
             area = cv2.contourArea(box)
             # size check
@@ -122,11 +122,11 @@ class getPostits:
 
                         # find contours in larger area
                         flag_changed = False
-                        contours_in_larger, hierarchy_in_larger = cv2.findContours(larger_area, cv2.RETR_TREE,
+                        _, contours_in_larger, hierarchy_in_larger = cv2.findContours(larger_area, cv2.RETR_TREE,
                                                                                    cv2.CHAIN_APPROX_NONE)
                         for count_in_larger in range(0, len(contours_in_larger)):
                             rect_in_larger = cv2.minAreaRect(contours_in_larger[count_in_larger])
-                            box_in_larger = cv2.cv.BoxPoints(rect_in_larger)
+                            box_in_larger = cv2.boxPoints(rect_in_larger)
                             box_in_larger = np.int0(box_in_larger)
                             area_in_larger = cv2.contourArea(box_in_larger)
                             if area_in_larger > outer_size * outer_lower and area_in_larger < outer_size * outer_upper:
@@ -166,14 +166,14 @@ class getPostits:
                             if flag_changed or (not flag_changed):  # changed20161109
                                 # find contours again
                                 dst_copy = np.copy(dst)
-                                contours_a, hierarchy_a = cv2.findContours(dst_copy, cv2.RETR_TREE,
+                                _, contours_a, hierarchy_a = cv2.findContours(dst_copy, cv2.RETR_TREE,
                                                                            cv2.CHAIN_APPROX_NONE)
 
                                 box_a_sorted = []
                                 for count_a in range(0, len(contours_a)):
                                     # minAreaRect
                                     rect_a = cv2.minAreaRect(contours_a[count_a])
-                                    box_a = cv2.cv.BoxPoints(rect_a)
+                                    box_a = cv2.boxPoints(rect_a)
                                     box_a = np.int0(box_a)
                                     area_a = cv2.contourArea(box_a)
 
@@ -392,10 +392,10 @@ class getPostits:
         gc.collect()
 
         # delete old postit image
-        old_postit_image = os.listdir('./tmp_datas/postit_tmp/')
+        old_postit_image = [filename for filename in os.listdir('./tmp_datas/postit_tmp/') if not filename.startswith('.')]
         for old_postit in old_postit_image:
             os.remove('./tmp_datas/postit_tmp/' + old_postit)
-        old_postit_image = os.listdir('./tmp_datas/postit_tmp_analyzing/')
+        old_postit_image = [filename for filename in os.listdir('./tmp_datas/postit_tmp_analyzing/') if not filename.startswith('.')]
         for old_postit in old_postit_image:
             os.remove('./tmp_datas/postit_tmp_analyzing/' + old_postit)
         # points include 8 points(1 postit's each point)
@@ -515,10 +515,10 @@ class readDots():
         first_y += larger_buffer
         if horizon == True:
             # extract search area
-            min_y = max(0, first_y - search_buffer)
-            max_y = min(postit.shape[0], first_y + bit_height + search_buffer)
-            min_x = max(0, first_x - search_buffer)
-            max_x = min(postit.shape[1], first_x + bit_width + search_buffer)
+            min_y = int(max(0, first_y - search_buffer))
+            max_y = int(min(postit.shape[0], first_y + bit_height + search_buffer))
+            min_x = int(max(0, first_x - search_buffer))
+            max_x = int(min(postit.shape[1], first_x + bit_width + search_buffer))
 
             search_area = postit[min_y:max_y, min_x:max_x]
 
@@ -527,13 +527,13 @@ class readDots():
 
             # find contours
             search_area_for_contours = np.copy(search_area)
-            contours, hierarchy = cv2.findContours(search_area_for_contours, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+            _, contours, hierarchy = cv2.findContours(search_area_for_contours, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
             box_left_top_idx = -1
             # cv2.imshow("search_area", search_area)
             for count in range(0, len(contours)):
                 # minAreaRect
                 rect = cv2.minAreaRect(contours[count])
-                box = cv2.cv.BoxPoints(rect)
+                box = cv2.boxPoints(rect)
                 box = np.int0(box)
                 area = cv2.contourArea(box)
                 # cv2.waitKey(0)
@@ -593,10 +593,10 @@ class readDots():
 
         if horizon == False:
             # extract search area
-            min_y = max(0, first_y - search_buffer)
-            max_y = min(postit.shape[0], first_y + bit_width + search_buffer)
-            min_x = max(0, first_x - search_buffer)
-            max_x = min(postit.shape[1], first_x + bit_height + search_buffer)
+            min_y = int(max(0, first_y - search_buffer))
+            max_y = int(min(postit.shape[0], first_y + bit_width + search_buffer))
+            min_x = int(max(0, first_x - search_buffer))
+            max_x = int(min(postit.shape[1], first_x + bit_height + search_buffer))
 
             search_area = postit[min_y:max_y, min_x:max_x]
 
@@ -605,12 +605,12 @@ class readDots():
 
             # find contours
             search_area_for_contours = np.copy(search_area)
-            contours, hierarchy = cv2.findContours(search_area_for_contours, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+            _, contours, hierarchy = cv2.findContours(search_area_for_contours, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
             box_left_top_idx = -1
             for count in range(0, len(contours)):
                 # minAreaRect
                 rect = cv2.minAreaRect(contours[count])
-                box = cv2.cv.BoxPoints(rect)
+                box = cv2.boxPoints(rect)
                 box = np.int0(box)
                 area = cv2.contourArea(box)
                 if area > self.outer_size * min_ratio and area < self.outer_size * max_ratio:

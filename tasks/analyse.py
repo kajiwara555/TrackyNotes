@@ -25,7 +25,7 @@ def main():
     outer_size = int(sys.argv[1])
     fps = int(sys.argv[2])
     # delete old postit image
-    old_postit_image = os.listdir('./datas/postit_saved/')
+    old_postit_image = [filename for filename in os.listdir('./datas/postit_saved/') if not filename.startswith('.')]
     for old_postit in old_postit_image:
         os.remove('./datas/postit_saved/' + old_postit)
 
@@ -42,7 +42,7 @@ def main():
 
     # read movie file list
     movie_id = 0
-    movie_files = os.listdir('./datas/movie/')
+    movie_files = [filename for filename in os.listdir('./datas/movie/') if not filename.startswith('.')]
     if len(movie_files) == 0:
         print("no movie")
         return -1
@@ -75,7 +75,7 @@ def main():
 
     # video writer
     if video_save:
-        writer = cv2.VideoWriter("./datas/movie/OUT.avi", cv2.cv.CV_FOURCC('M', 'J', 'P', 'G'), fps,
+        writer = cv2.VideoWriter("./datas/movie/OUT.avi", cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), fps,
                                  (frame.shape[1], frame.shape[0]))
 
     # postit dictionary
@@ -96,7 +96,7 @@ def main():
                     break
         else:
             # read frame
-            print("progress: " + str(int(time / fps) / 60) + ":" + str((time / fps) % 60))
+            print("progress: " + str(int((time / fps) / 60)) + ":" + str(int((time / fps) % 60)))
             ret, frame = cap.read()
             if ret == False:
                 movie_id += 1

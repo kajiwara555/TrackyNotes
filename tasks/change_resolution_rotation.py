@@ -57,7 +57,7 @@ def main():
     # video reader and writer
     cap = cv2.VideoCapture('./datas/movie/' + movie_files[0])
     if video_save:
-        writer = cv2.VideoWriter("./datas/movie/OUT.avi", cv2.cv.CV_FOURCC('M', 'J', 'P', 'G'), fps, (3840, 2160))
+        writer = cv2.VideoWriter("./datas/movie/OUT.avi", cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), fps, (3840, 2160))
     # csv_file
     csv_every_second = open("./datas/csv/every_second.csv", "w")
     csv_final = open("./datas/csv/final.csv", "w")
